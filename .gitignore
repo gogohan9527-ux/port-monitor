@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Build outputs
+dist/
+frontend/dist/
+backend/web/dist/*
+!backend/web/dist/.gitkeep
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Frontend incremental / TS build info
+*.tsbuildinfo
+
+# Go workspace + coverage (auto-generated)
+go.work
+go.work.sum
+*.out
+coverage.*
+
+# Runtime config and binary written next to the executable
+/config.json
+/port-monitor
+/port-monitor.exe
+
+# Logs and runtime state
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# Environment and local config
+.env
+.env.*
+!.env.example
+*.local
+*.local.*
+
+# AI assistant local artifacts
+.claude/settings.local.json
+.claude/launch.json
+.claude/plans/
+.claude/cache/
+.claude/tmp/
+.claude/temp/
+.claude/transcripts/
+.claude/shell-snapshots/
+.claude/*.bak
+.claude/*.tmp
+.codex/
+.gemini/
+.aider*
+*.aider.chat.history.md
+
+# Keep shared AI handoff files trackable
+!.claude/
+!.claude/handoff.md
+!.claude/progress.log
+!MEMORY.md
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
