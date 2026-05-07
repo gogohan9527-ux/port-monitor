@@ -71,6 +71,71 @@ Linux / macOS：
 
 脚本流程：`npm run build` → 把 `frontend/dist` 复制到 `backend/web/dist` → `go build` 出单一二进制。
 
+## Linux 生产启动
+
+Linux 构建完成后，根目录会生成 `port-monitor` 二进制文件。首次启动会在二进制同目录生成 `config.json`，默认监听 `0.0.0.0:7000`。
+
+前台验证：
+
+```bash
+chmod +x ./port-monitor
+./port-monitor
+```
+
+浏览器打开 `http://服务器IP:7000`，使用 `admin / admin` 登录。
+
+临时后台运行：
+
+```bash
+nohup ./port-monitor > port-monitor.log 2>&1 &
+```
+
+推荐生产环境使用 systemd 托管。示例安装目录为 `/opt/port-monitor`：
+
+```bash
+sudo mkdir -p /opt/port-monitor
+sudo cp ./port-monitor /opt/port-monitor/
+sudo chmod +x /opt/port-monitor/port-monitor
+```
+
+创建 `/etc/systemd/system/port-monitor.service`：
+
+```ini
+[Unit]
+Description=Port Monitor
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/port-monitor
+ExecStart=/opt/port-monitor/port-monitor
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+启动并设置开机自启：
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now port-monitor
+sudo systemctl status port-monitor
+```
+
+查看日志：
+
+```bash
+journalctl -u port-monitor -f
+```
+
+如需修改端口，编辑 `/opt/port-monitor/config.json` 里的 `listenAddr`，然后重启服务：
+
+```bash
+sudo systemctl restart port-monitor
+```
+
 ## 接口
 
 | 方法 | 路径 | 说明 |
